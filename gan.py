@@ -1,7 +1,3 @@
-New
-+267
--0
-
 import argparse
 import json
 from itertools import count
