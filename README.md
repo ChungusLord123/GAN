@@ -1,108 +1,101 @@
-AppleGAN
+# AppleGAN
 
-A PyTorch implementation of a DCGAN trained on the kmkinney/GANGothicArchitecture dataset, which in this project is treated as a collection of apple images.
+A PyTorch implementation of a DCGAN trained on the kmkinney/GANGothicArchitecture dataset, which is treated here as a collection of apple images.  
 The model supports resumable training, checkpointing, and image generation at any time.
 
-Overview
+## Overview
 
-This repository contains a minimal, reproducible GAN pipeline for generating synthetic apple images.
+This repository contains a minimal, reproducible GAN pipeline for generating synthetic apple images.  
 The architecture follows the standard DCGAN design with transposed-convolution upsampling in the generator and strided-convolution downsampling in the discriminator.
 
-The training loop is designed to be interruption-safe. Training can be stopped at any time and resumed without loss of progress.
-A command-line interface makes it easy to either train the model or generate new samples from a saved checkpoint.
+The training loop is interruption-safe. Training can be stopped and resumed at any point without losing progress.  
+A simple command-line interface allows both training and sample generation.
 
-Features
+## Features
 
-DCGAN architecture implemented in PyTorch
+- DCGAN architecture implemented in PyTorch  
+- Treats the entire dataset as unlabeled apple images  
+- Safe to interrupt training at any time  
+- Automatic checkpoint saving and restoration  
+- GPU support  
+- Command-line interface for sample generation
 
-Works with any folder-structured dataset; here it is assumed all images are apples
-
-Training can be interrupted safely (Ctrl-C)
-
-Automatic checkpoint saving and resumption
-
-GPU support when available
-
-Command-line generation of image samples
-
-File Structure
-
-This repository uses the following structure:
+## File Structure
 
 AppleGAN/
-    gan.py
-    data/
-        <your dataset images here>
-    checkpoints/
-    generated/
-    README.md
+gan.py
+data/
+<your dataset images here>
+checkpoints/
+generated/
+README.md
 
+`gan.py` contains all model definitions, training logic, checkpoint handling, and generation utilities.
 
-gan.py contains all training, model, and inference logic in a single script.
+## Requirements
 
-Requirements
+- Python 3.8+  
+- PyTorch  
+- torchvision  
+- numpy  
+- pillow  
 
-Python 3.8+
-
-PyTorch
-
-torchvision
-
-numpy
-
-pillow
-
-Install dependencies:
+Install dependencies with:
 
 pip install torch torchvision numpy pillow
 
-Training
+## Training
 
-Place your dataset inside the data/ directory.
-All images will be loaded recursively.
+Place your dataset inside the `data/` directory.
+
+To start training:
+
+
+## Training
+
+Place your dataset inside the `data/` directory.
 
 To start training:
 
 python gan.py --train
 
+vbnet
+Copy code
 
-Training will automatically detect and use a GPU if available.
-Checkpoints are written to checkpoints/ at the end of each epoch.
+The script uses the GPU automatically if one is available.
 
-To resume training after interruption:
+To resume training:
 
 python gan.py --train
 
+powershell
+Copy code
 
-The script will load the latest checkpoint and continue from the correct epoch.
+## Generating Images
 
-Generating Images
+To generate N samples using the latest generator checkpoint:
 
-To generate new apple images using the latest saved generator:
+python gan.py --generate N
 
-python gan.py --generate 64
+diff
+Copy code
 
+Images will be saved into the `generated/` directory.
 
-This outputs 64 generated samples to the generated/ directory.
+## Checkpoints
 
-Checkpoints
+The following files are saved after every epoch:
 
-The following files are saved after each epoch:
+- generator.pth  
+- discriminator.pth  
+- optim_G.pth  
+- optim_D.pth  
+- training_state.json
 
-generator.pth
+These allow full restoration of training state.
 
-discriminator.pth
+## Notes
 
-optim_G.pth
-
-optim_D.pth
-
-training_state.json (epoch and batch index)
-
-These files allow full restoration of the training session.
-
-Notes
-
-All images are automatically resized to 64×64 and normalized to [-1, 1].
-
-This implementation is intended as a clean, minimal reference rather than an optimized production model.
+- All images are resized to 64×64 and normalized to [-1, 1].  
+- This implementation is meant to be simple and reproducible, not optimized.  
+- Any folder-structured dataset containing images can be substituted.
